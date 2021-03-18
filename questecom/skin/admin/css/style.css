@@ -1,0 +1,28 @@
+body {
+    background-color: #29282C;
+}
+span {
+    color: #F7BB0E;
+}
+
+h1{
+    color: #F7BB0E;
+}
+hr{
+    background-color:#F7BB0E ;
+}
+label {
+    color:white;
+}
+table {
+    background-color: rgba(0,0,0,0);
+}
+td {
+    color: white;
+}
+th {
+    color: #F7BB0E;
+    font-size: medium;
+}
+
+
