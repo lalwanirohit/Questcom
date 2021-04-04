@@ -19,14 +19,15 @@ class Media extends \Controller\Core\Admin
             if ($id = $this->getRequest()->getGet('id')) {
                 $image->productId = $id;
             }
+            if (isset($_FILES['file'])) {
+                $photo = $_FILES['file']['name'];
+                $tempname = $_FILES['file']['tmp_name'];
 
-            if (isset($_FILES['image'])) {
-                $photo = $_FILES['image']['name'];
-                $tempname = $_FILES['image']['tmp_name'];
-                $location = 'skin/admin/images/product/' . $photo;
-
-                $file_ext = strtolower(end(explode('.', $_FILES['image']['name'])));
-                $file_size = $_FILES['image']['size'];
+                $file_ext = strtolower(end(explode('.', $_FILES['file']['name'])));
+                $file_size = $_FILES['file']['size'];
+                // $photoName = time() . '.' . $file_ext;
+                $photoName = rand(1, 99) . '-' . time() . '-' . substr(str_shuffle('abcdefghijklmnopqrstuvwxyz'), 0, 4) . '.' . $file_ext;
+                $location = 'media/products/' . $photoName;
 
                 $extensions = array("jpeg", "jpg", "png");
 
@@ -39,7 +40,7 @@ class Media extends \Controller\Core\Admin
                 }
 
                 if (move_uploaded_file($tempname, $location)) {
-                    $image->name = $location;
+                    $image->name = $photoName;
                     $image->thumb = 1;
                     $image->small = 1;
                     $image->base = 1;
@@ -48,11 +49,10 @@ class Media extends \Controller\Core\Admin
 
                 if ($image->save()) {
                     $this->getMessage()->setSuccess('<b>Image Inserted / Updated Successfully.</b>');
-                    $this->redirect('form', 'admin_product');
                 } else {
                     $this->getMessage()->setFailure('<b>Unable to Insert / Update the Image.</b>');
-                    $this->redirect('form', 'admin_product');
                 }
+                $this->redirect('form', 'admin_product');
             }
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
@@ -70,9 +70,6 @@ class Media extends \Controller\Core\Admin
             $image = \Mage::getModel('Model\Product\Media');
 
             $data = $this->getRequest()->getPost();
-
-            echo "<pre>";
-            print_r($data['label']);
             $data2 = implode(', ', $data['gallery']);
 
             $id = $this->getRequest()->getGet('id');
@@ -114,7 +111,7 @@ class Media extends \Controller\Core\Admin
         $imageNames = $image->all($unlinkquery);
         foreach ($imageNames->data as $key => $value) {
             foreach ($value->data as $name) {
-                unlink($name);
+                unlink('media/products/' . $name);
             }
         }
         $query = "DELETE FROM product_media where imageId in ({$data2})";

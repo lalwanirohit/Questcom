@@ -12,13 +12,18 @@ class Group extends \Controller\core\Admin
     public function showAction()
     {
         try {
-            $layout = $this->getLayout();
+            $gridHtml = \Mage::getBlock('Block\Admin\Customer\Group\Grid')->toHtml();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml,
+                    ],
+                ],
+            ];
 
-            $contentGrid = \Mage::getBlock('Block\Admin\Customer\Group\Grid');
-
-            $content = $layout->getContent();
-            $content->addChild($contentGrid, 'grid');
-            $this->renderLayout();
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -28,10 +33,7 @@ class Group extends \Controller\core\Admin
     public function formAction()
     {
         try {
-            $layout = $this->getLayout();
-
             $id = $this->getRequest()->getGet('id');
-
             $customerGroup = \Mage::getModel('Model\Customer\Group');
             if ($id) {
                 $row = $customerGroup->load($id);
@@ -39,12 +41,19 @@ class Group extends \Controller\core\Admin
                     throw new \Exception("No customer is available at given id", 1);
                 }
             }
-
-            $content = $layout->getContent();
             $contentBlock = \Mage::getBlock('Block\Admin\Customer\Group\Edit');
             $contentBlock->setTableRow($customerGroup);
-            $content->addChild($contentBlock, 'form');
-            $this->renderLayout();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $contentBlock->toHtml(),
+                    ],
+                ],
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
+
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -85,21 +94,16 @@ class Group extends \Controller\core\Admin
     {
         $group = \Mage::getModel('Model\Customer\Group');
         if ($id = $this->getRequest()->getGet('id')) {
-            $group->groupId = $id;
-            $status = $this->getRequest()->getGet('status');
-            if ($status == 1) {
-                $group->status = 0;
+
+            $record = $group->load($id);
+            if ($record->status == 1) {
+                $record->status = 0;
             } else {
-                $group->status = 1;
+                $record->status = 1;
             }
         }
-        if ($group->save()) {
-            $this->getMessage()->setSuccess('<b>Customer Group Status Changed Successfully.</b>');
-            $this->redirect('show', null, null, true);
-        } else {
-            $this->getMessage()->setFailure('<b>Unable To Change The Customer Group Status.</b>');
-            $this->redirect('show', null, null, true);
-        }
+        $group->save();
+        $this->redirect('show', null, null, true);
     }
 
     public function deleteAction()
@@ -112,16 +116,25 @@ class Group extends \Controller\core\Admin
             $group = \Mage::getModel('Model\Customer\Group');
             if ($group->delete($id)) {
                 $this->getMessage()->setSuccess('<b>Customer Group Deleted Successfully.</b>');
-                $this->redirect('show', null, null, true);
             } else {
                 $this->getMessage()->setFailure('<b>Unable to delete the Customer Group.</b>');
-                $this->redirect('show', null, null, true);
             }
-
             $this->redirect('show', null, null, true);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
         }
+    }
+
+    public function removeAction()
+    {
+        $group = \Mage::getModel('Model\Customer\Group');
+
+        $data = $this->getRequest()->getPost('remove');
+        $data2 = implode(', ', $data);
+        $query = "DELETE FROM customer_group where groupId in ({$data2})";
+        $group->delete($data2, $query);
+        // $this->redirect('show', 'admin_admin');
+        $this->redirect('show', null, null, true);
     }
 }

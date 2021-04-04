@@ -56,8 +56,16 @@
 
 </div>
 <br>
-<?php if ($id): ?>
-    <button class="btn btn-warning" name="addorupdatecustomer">Update Customer</button>
-<?php else: ?>
-    <button class="btn btn-warning" name="addorupdatecustomer">Insert Customer</button>
-<?php endif;?>
+    <button class="btn btn-warning" type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" name="addorupdatecustomer">Save Customer</button>
+
+<script>
+function submitForm(button) {
+    var form = $(button).closest('form');
+    form.attr("action","<?php echo $this->getUrl()->getUrl('save', 'admin_customer') ?>")
+}
+
+// function submitForm(button){
+// var form = $(button).closest('form');
+// form.attr('action', "<?php echo $this->getUrl()->getUrl('save', 'admin_admin'); ?>");
+// }
+</script>

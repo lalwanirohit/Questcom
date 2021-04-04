@@ -10,7 +10,7 @@
 
     <hr><br>
 
-    <form method="post" action="<?php echo $this->getFormUrl(); ?>">
+    <form method="post" id="shippingForm" action="<?php echo $this->getFormUrl(); ?>">
 
         <div class="form-row">
 
@@ -54,11 +54,6 @@
         </div>
 
         <br>
-        <?php if ($id): ?>
-            <button class="btn btn-warning">Update Shipping</button>
-        <?php else: ?>
-            <button class="btn btn-warning">Insert Shipping</button>
-        <?php endif;?>
-
+        <button class="btn btn-warning" type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#shippingForm').load();">Save Shipping</button>
     </form>
 </div>

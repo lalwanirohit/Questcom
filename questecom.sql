@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2021 at 02:06 PM
+-- Generation Time: Apr 04, 2021 at 10:16 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -40,9 +40,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminId`, `userName`, `password`, `status`, `createdAt`) VALUES
-(1, 'Rohit Lalwani', '1db2cd81f19741d67e4c7aef245a689e', 1, '2021-03-18 | 02:41:42 PM'),
-(2, 'sumant sukhanandee', '705cc32fe527ce78894ca98de277c287', 1, '2021-03-18 | 02:46:13 PM'),
-(4, 'sanket lalwani', 'a73ec72702166f7f685e536a910d54d9', 1, '2021-03-18 | 03:19:11 PM');
+(1, 'Rohit hitman', 'fbb7b6d43377f43ad0c2b43bae8bead0', 0, '2021-03-18 | 02:41:42 PM');
 
 -- --------------------------------------------------------
 
@@ -66,7 +64,7 @@ CREATE TABLE `attribute` (
 --
 
 INSERT INTO `attribute` (`attributeId`, `entityTypeId`, `name`, `code`, `inputType`, `backendType`, `sortOrder`, `backendModel`) VALUES
-(8, 'product', 'color', 'color', 'select', 'varchar(50)', 1, '');
+(32, 'product', 'color', 'color', 'select', 'varchar(50)', 1, '');
 
 -- --------------------------------------------------------
 
@@ -81,14 +79,91 @@ CREATE TABLE `attribute_option` (
   `sortOrder` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `attribute_option`
+-- Table structure for table `cart`
 --
 
-INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) VALUES
-(46, 'Red', 8, 1),
-(47, 'Green', 8, 2),
-(48, 'Yellow', 8, 3);
+CREATE TABLE `cart` (
+  `cartId` int(11) NOT NULL,
+  `sessionId` varchar(50) NOT NULL,
+  `customerId` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  `discount` int(11) NOT NULL,
+  `paymentMethodId` int(11) NOT NULL,
+  `shippingMethodId` int(11) NOT NULL,
+  `shippingAmount` int(11) NOT NULL,
+  `grandTotal` decimal(10,2) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`cartId`, `sessionId`, `customerId`, `total`, `discount`, `paymentMethodId`, `shippingMethodId`, `shippingAmount`, `grandTotal`, `createdAt`) VALUES
+(1, '', 2, 10800, 1200, 2, 1, 150, '10950.00', '2021-03-30 11:17:33'),
+(2, '', 1, 7000, 700, 2, 1, 150, '6450.00', '2021-03-30 11:29:33'),
+(3, '', 0, 0, 0, 0, 0, 0, '0.00', '2021-03-31 13:33:00'),
+(4, '', 11, 1000, 100, 1, 1, 150, '1050.00', '2021-04-02 13:06:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_address`
+--
+
+CREATE TABLE `cart_address` (
+  `cartAddressId` int(11) NOT NULL,
+  `cartId` int(11) NOT NULL,
+  `firstName` varchar(30) NOT NULL,
+  `lastName` varchar(30) NOT NULL,
+  `addressId` int(11) NOT NULL,
+  `addressType` varchar(30) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL,
+  `zipcode` varchar(6) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `sameAsBilling` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cart_address`
+--
+
+INSERT INTO `cart_address` (`cartAddressId`, `cartId`, `firstName`, `lastName`, `addressId`, `addressType`, `address`, `city`, `state`, `zipcode`, `country`, `sameAsBilling`) VALUES
+(1, 1, 'Sanket', 'Lalwani', 0, 'billing', 'Judges bunglow,\r\njilla seva sadan 1', 'rajkot', 'gujarat', '354641', 'india', 0),
+(2, 1, 'Sanket', 'Lalwani', 0, 'shipping', 'Judges bunglow,\r\njilla seva sadan 1', 'rajkot', 'gujarat', '354641', 'india', 0),
+(3, 2, 'Rohit', 'Lalwani', 0, 'billing', 'jay ambe , plot number 25 , aadarsh nagar , joshipara , junagadh-362001.', 'Ahmedabad', 'gujarat', '362001', 'India', 0),
+(4, 2, 'Rohit', 'Lalwani', 0, 'shipping', 'jay ambe , plot number 25 , aadarsh nagar , joshipara , junagadh-362001.', 'Ahmedabad', 'gujarat', '362001', 'India', 0),
+(5, 4, 'harshit', 'lalwani', 0, 'billing', 'aaa', 'aaa', 'aa', '456589', 'ss', 0),
+(6, 4, 'harshit', 'lalwani', 0, 'shipping', 'aaa', 'aaa', 'aa', '456589', 'ss', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_item`
+--
+
+CREATE TABLE `cart_item` (
+  `cartItemId` int(11) NOT NULL,
+  `cartId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `quantity` int(4) NOT NULL,
+  `basePrice` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cart_item`
+--
+
+INSERT INTO `cart_item` (`cartItemId`, `cartId`, `productId`, `quantity`, `basePrice`, `discount`, `createdAt`) VALUES
+(2, 2, 26, 7, '1000.00', '100.00', '2021-03-30 11:29:36'),
+(3, 4, 26, 1, '1000.00', '100.00', '2021-04-02 13:06:58');
 
 -- --------------------------------------------------------
 
@@ -112,11 +187,24 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`categoryId`, `parentId`, `name`, `path`, `status`, `description`, `createdAt`, `updatedAt`) VALUES
-(9, 0, 'Bedroom', '9', 1, 'bedroom', '', ''),
-(11, 0, 'Living Room', '11', 1, 'living room', '', ''),
-(12, 11, 'Sofa', '11=12', 1, 'sofa', '', '2021-03-18 | 10:24:02 AM'),
-(13, 9, 'Bed', '9=13', 1, 'bed', '', ''),
-(14, 13, 'sectional bed', '9=13=14', 1, 'sectional bed', '', '');
+(25, 0, 'bed', '25', 1, 's', '', ''),
+(27, 0, 'sofa', '27', 1, 'afsaf', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_media`
+--
+
+CREATE TABLE `category_media` (
+  `mediaId` int(11) NOT NULL,
+  `categoryId` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `label` varchar(50) NOT NULL,
+  `icon` int(4) NOT NULL,
+  `base` int(4) NOT NULL,
+  `banner` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -138,7 +226,8 @@ CREATE TABLE `cms_page` (
 --
 
 INSERT INTO `cms_page` (`pageId`, `title`, `identifier`, `content`, `status`, `createdAt`) VALUES
-(1, 'Contact Us', 'contact us', '<p><strong>Email :&nbsp;<a href=\"mailto:lalwanirohit111@gmail.com?subject=contact%20message&amp;body=Thank%20you%20for%20contacting%20us\">lalwanirohit111@gmail.com</a></strong></p>', 1, '2021-03-11 | 10:56:44 PM');
+(1, 'Contact Us', 'contact us', '<p><strong>Email :&nbsp;<a href=\"mailto:lalwanirohit111@gmail.com?subject=contact%20message&amp;body=Thank%20you%20for%20contacting%20us\">lalwanirohit111@gmail.com</a></strong></p>', 0, '2021-03-11 | 10:56:44 PM'),
+(6, 'Ajax is in process', 'ajax', '<p>Right Now I am converting my application into ajax</p>', 1, '2021-03-21 | 02:51:30 PM');
 
 -- --------------------------------------------------------
 
@@ -164,8 +253,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`customerId`, `groupId`, `firstName`, `lastName`, `email`, `mobile`, `password`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'Rohit', 'Lalwani', 'lalwanirohit111@gmail.com', '8320247191', '358d33025103c0279ed647c4c9d24bdf', 1, '2021-03-12 | 10:56:54 AM', '2021-03-12 | 10:57:12 AM'),
-(2, 2, 'Sanket', 'Lalwani', 'sanket111@gmail.com', '9998574231', 'bc6c22be7a5ef7f662a7dac01c3101a1', 1, '2021-03-14 | 06:13:36 PM', '2021-03-14 | 06:13:47 PM');
+(1, 9, 'Rohit', 'Lalwani', 'lalwanirohit111@gmail.com', '9924206470', '358d33025103c0279ed647c4c9d24bdf', 1, '2021-03-12 | 10:56:54 AM', '2021-03-23 | 12:08:12 PM'),
+(2, 9, 'Sanket', 'Lalwani', 'sanket111@gmail.com', '9998574231', 'bc6c22be7a5ef7f662a7dac01c3101a1', 1, '2021-03-14 | 06:13:36 PM', '2021-03-14 | 06:13:47 PM'),
+(11, 9, 'harshit', 'lalwani', 'harshit111@gmail.com', '444', 'd1774186b4ac4f0aa0ed26c960eb3028', 1, '2021-04-02 | 04:36:35 PM', '2021-04-02 | 04:52:20 PM');
 
 -- --------------------------------------------------------
 
@@ -189,10 +279,10 @@ CREATE TABLE `customer_address` (
 --
 
 INSERT INTO `customer_address` (`addressId`, `customerId`, `address`, `city`, `state`, `zipcode`, `country`, `addressType`) VALUES
-(1, 1, 'plot number 45,\r\nstreet number-3,\r\nnehru nagar', 'ahedabad', 'gujarat', '450000', 'india', 'billing'),
-(2, 1, 'plot number 25,\r\naadarsh nagar-1,\r\njoshipura', 'junagadh', 'gujarat', '362001', 'india', 'shipping'),
 (3, 2, 'Judges bunglow,\r\njilla seva sadan 1', 'rajkot', 'gujarat', '354641', 'india', 'billing'),
-(4, 2, 'Judges bunglow,\r\njilla seva sadan 1', 'rajkot', 'gujarat', '354641', 'india', 'shipping');
+(4, 2, 'Judges bunglow,\r\njilla seva sadan 1', 'rajkot', 'gujarat', '354641', 'india', 'shipping'),
+(12, 11, 'aaa', 'aaa', 'aa', '456589', 'ss', 'billing'),
+(13, 11, 'aaa', 'aaa', 'aa', '456589', 'ss', 'shipping');
 
 -- --------------------------------------------------------
 
@@ -212,8 +302,8 @@ CREATE TABLE `customer_group` (
 --
 
 INSERT INTO `customer_group` (`groupId`, `name`, `status`, `createdAt`) VALUES
-(1, 'Retailer', 1, '2021-03-12 | 10:53:54 AM'),
-(2, 'Whole seller', 1, '2021-03-12 | 10:54:03 AM');
+(1, 'Retailers', 1, '2021-03-12 | 10:53:54 AM'),
+(9, 'Whole Sellers', 1, '2021-03-21 | 02:45:48 PM');
 
 -- --------------------------------------------------------
 
@@ -235,8 +325,8 @@ CREATE TABLE `payment` (
 --
 
 INSERT INTO `payment` (`methodId`, `name`, `code`, `description`, `status`, `createdAt`) VALUES
-(1, 'Rohit Lalwani', 'pay-83202', 'payment has been done online', 1, '2021-03-12 | 10:59:11 AM'),
-(2, 'sanket lalwani', 'pay-97191', 'payment done online. thank you', 1, '2021-03-14 | 06:23:43 PM');
+(1, 'Cash On Delivery', '', 'Pay Rupees on delivery', 1, '2021-03-30 | 01:02:42 PM'),
+(2, 'Credit Card', '', 'Do Payment with credit card', 1, '2021-03-30 | 01:03:10 PM');
 
 -- --------------------------------------------------------
 
@@ -246,6 +336,7 @@ INSERT INTO `payment` (`methodId`, `name`, `code`, `description`, `status`, `cre
 
 CREATE TABLE `product` (
   `productId` int(11) NOT NULL,
+  `brandId` int(11) NOT NULL,
   `sku` varchar(50) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
@@ -262,10 +353,35 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdAt`, `updatedAt`, `color`) VALUES
-(1, '84a9e1eb3cba44', 'Dell Laptop', '45000.00', '1000.00', 100, '8 GB RAM, I5 PROCESSOR, GREAT DESIGN AND COLOR', 1, '2021-03-12 | 10:28:31 AM', '2021-03-17 | 10:59:06 PM', 'Yellow'),
-(3, '580a0beb6d2492', 'laptop bag', '2755.00', '250.00', 145, 'GREAT QUALITY LAPTOP BAG. HANDLE IS ALSO AVAILABLE. WASHABLE BAG.', 1, '2021-03-12 | 08:03:19 PM', NULL, 'Red'),
-(7, '42c1cfe46672df', 'ceat cricket bat', '6500.00', '250.00', 45, 'GREAT ENGLISH WILLOW. NICE GRIP TOO.', 1, '2021-03-18 | 09:04:09 AM', NULL, 'Green');
+INSERT INTO `product` (`productId`, `brandId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdAt`, `updatedAt`, `color`) VALUES
+(1, 1, 'asds', 'asdasd', '44.00', '44.00', 1, 'hsfhdhdfhdfhdf', 1, NULL, NULL, NULL),
+(26, 1, '56e20730ac30f1', 'MRF bat', '1000.00', '100.00', 1, 'asd', 1, '2021-03-23 | 11:58:18 AM', '', NULL),
+(27, 1, 'd46a03dfd7c832', 'aaa', '555.00', '555.00', 555, 'sdgsdg', 1, '2021-04-03 | 05:42:14 PM', NULL, NULL),
+(28, 1, 'asds', 'asdasd', '44.00', '44.00', 1, 'hsfhdhdfhdfhdf', 1, NULL, NULL, NULL),
+(29, 1, 'asds', 'asdasd', '44.00', '44.00', 1, 'hsfhdhdfhdfhdf', 1, NULL, NULL, NULL),
+(30, 1, 'asds', 'asdasd', '44.00', '44.00', 1, 'hsfhdhdfhdfhdf', 1, NULL, NULL, NULL),
+(31, 1, 'asds', 'asdasd', '44.00', '44.00', 1, 'hsfhdhdfhdfhdf', 1, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_brand`
+--
+
+CREATE TABLE `product_brand` (
+  `brandId` int(11) NOT NULL,
+  `brandName` varchar(100) NOT NULL,
+  `brandImage` varchar(100) NOT NULL,
+  `status` int(4) NOT NULL,
+  `createdAt` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_brand`
+--
+
+INSERT INTO `product_brand` (`brandId`, `brandName`, `brandImage`, `status`, `createdAt`) VALUES
+(1, 'one', '7-1616480819-qign.jpg', 0, '2021-03-23 | 11:56:59 AM');
 
 -- --------------------------------------------------------
 
@@ -279,16 +395,6 @@ CREATE TABLE `product_group_price` (
   `customerGroupId` int(11) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `product_group_price`
---
-
-INSERT INTO `product_group_price` (`entityId`, `productId`, `customerGroupId`, `price`) VALUES
-(1, 1, 1, '45100.00'),
-(2, 1, 2, '45250.00'),
-(3, 3, 1, '2900.00'),
-(4, 3, 2, '2800.00');
 
 -- --------------------------------------------------------
 
@@ -306,21 +412,6 @@ CREATE TABLE `product_media` (
   `base` int(4) DEFAULT NULL,
   `gallery` int(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `product_media`
---
-
-INSERT INTO `product_media` (`imageId`, `productId`, `name`, `label`, `small`, `thumb`, `base`, `gallery`) VALUES
-(1, 1, 'skin/admin/images/product/dell1.jpg', 'image 1', 1, 0, 0, 1),
-(2, 1, 'skin/admin/images/product/dell2.jpg', 'image 2', 0, 1, 0, 1),
-(3, 1, 'skin/admin/images/product/dell3.jpg', 'image 3', 0, 0, 1, 1),
-(7, 3, 'skin/admin/images/product/lbag1.jpg', 'image 1', 1, 0, 0, 1),
-(8, 3, 'skin/admin/images/product/lbag2.jpg', 'image 2', 0, 1, 0, 1),
-(9, 3, 'skin/admin/images/product/lbag3.jpg', 'image 3', 0, 0, 1, 1),
-(10, 7, 'skin/admin/images/product/ceat1.jpg', '', 0, 0, 0, 1),
-(14, 7, 'skin/admin/images/product/ceat2.jpg', NULL, 1, 1, 1, 1),
-(15, 7, 'skin/admin/images/product/ceat3.jpg', NULL, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -343,7 +434,7 @@ CREATE TABLE `shipping` (
 --
 
 INSERT INTO `shipping` (`methodId`, `code`, `name`, `amount`, `description`, `status`, `createdAt`) VALUES
-(5, 'ship-83202', 'Rohit lalwani', '45000.00', 'Bought nice phone', 1, NULL);
+(1, 'ship-83202', 'express delivery', '150.00', 'get delivery in one day', 1, '2021-03-30 | 01:03:51 PM');
 
 --
 -- Indexes for dumped tables
@@ -369,10 +460,35 @@ ALTER TABLE `attribute_option`
   ADD KEY `attributeId` (`attributeId`);
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`cartId`);
+
+--
+-- Indexes for table `cart_address`
+--
+ALTER TABLE `cart_address`
+  ADD PRIMARY KEY (`cartAddressId`);
+
+--
+-- Indexes for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD PRIMARY KEY (`cartItemId`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`categoryId`);
+
+--
+-- Indexes for table `category_media`
+--
+ALTER TABLE `category_media`
+  ADD PRIMARY KEY (`mediaId`),
+  ADD KEY `categoryId` (`categoryId`);
 
 --
 -- Indexes for table `cms_page`
@@ -414,6 +530,12 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`productId`);
 
 --
+-- Indexes for table `product_brand`
+--
+ALTER TABLE `product_brand`
+  ADD PRIMARY KEY (`brandId`);
+
+--
 -- Indexes for table `product_group_price`
 --
 ALTER TABLE `product_group_price`
@@ -442,79 +564,109 @@ ALTER TABLE `shipping`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `attribute`
 --
 ALTER TABLE `attribute`
-  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `attribute_option`
 --
 ALTER TABLE `attribute_option`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `cart_address`
+--
+ALTER TABLE `cart_address`
+  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `category_media`
+--
+ALTER TABLE `category_media`
+  MODIFY `mediaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cms_page`
 --
 ALTER TABLE `cms_page`
-  MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `customerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `customer_group`
 --
 ALTER TABLE `customer_group`
-  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `methodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `methodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `product_brand`
+--
+ALTER TABLE `product_brand`
+  MODIFY `brandId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `product_group_price`
 --
 ALTER TABLE `product_group_price`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `product_media`
 --
 ALTER TABLE `product_media`
-  MODIFY `imageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `imageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `methodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `methodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -525,6 +677,12 @@ ALTER TABLE `shipping`
 --
 ALTER TABLE `attribute_option`
   ADD CONSTRAINT `attribute_option_ibfk_1` FOREIGN KEY (`attributeId`) REFERENCES `attribute` (`attributeId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `category_media`
+--
+ALTER TABLE `category_media`
+  ADD CONSTRAINT `category_media_ibfk_1` FOREIGN KEY (`categoryId`) REFERENCES `category` (`categoryId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customer`

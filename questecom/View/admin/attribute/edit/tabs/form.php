@@ -7,7 +7,7 @@
 <?php $attribute = $this->getTableRow();?>
 
 <hr><br>
-<form action="<?php echo $this->getFormUrl() ?>" method="post">
+<!-- <form id="attributeForm" method="POST"> -->
 
     <div class="form-row">
         <div class="form-group col-md-4">
@@ -61,9 +61,15 @@
         </div>
     </div>
     <br>
-    <?php if ($id): ?>
-        <button class="btn btn-warning">Update Attribute</button>
-    <?php else: ?>
-        <button class="btn btn-warning">Insert Attribute</button>
-    <?php endif;?>
-</form>
+    <button type="button" href="javascript:void(0)" class="btn btn-warning" onclick="submitForm(this); object.resetParams().setForm('#form').load();">Save Attribute</button>
+<!-- </form> -->
+
+<script>
+
+function submitForm(button){
+var form = $(button).closest('form');
+form.attr('action', "<?php echo $this->getUrl()->getUrl('save', 'admin_attribute'); ?>");
+// form.submit();
+
+}
+</script>

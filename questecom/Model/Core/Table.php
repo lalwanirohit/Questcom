@@ -2,8 +2,6 @@
 
 namespace Model\Core;
 
-\Mage::loadFileByClassName('Model\Core\Adapter');
-
 class Table
 {
 
@@ -13,30 +11,27 @@ class Table
     }
     protected $tableName = null;
     protected $primaryKey = null;
+    // protected $originalData = [];
     public $data = [];
     protected $adapter = null;
 
     public function setTableName($tableName)
     {
         $this->tableName = $tableName;
+        return $this;
     }
     public function getTableName()
     {
-        // if (!$this->tableName) {
-        //     $this->setTableName($tableName);
-        // }
         return $this->tableName;
     }
 
     public function setPrimaryKey($primaryKey)
     {
         $this->primaryKey = $primaryKey;
+        return $this;
     }
     public function getPrimaryKey()
     {
-        // if (!$this->primaryKey) {
-        //     $this->setPrimaryKey($primaryKey);
-        // }
         return $this->primaryKey;
     }
 
@@ -47,11 +42,30 @@ class Table
     }
     public function __get($value)
     {
+        // if (array_key_exists($value, $this->data)) {
+        //     return $this->data[$value];
+        // }
+
+        // if (array_key_exists($value, $this->originalData)) {
+        //     return $this->originalData[$value];
+        // }
+        // return null;
         if (!array_key_exists($value, $this->data)) {
             return null;
         }
         return $this->data[$value];
     }
+
+    // public function setOriginalData($originalData)
+    // {
+    //     $this->originalData = $originalData;
+    //     return $this;
+    // }
+
+    // public function getOriginalData()
+    // {
+    //     return $this->originalData;
+    // }
 
     public function setData(array $data)
     {
@@ -60,13 +74,7 @@ class Table
     }
     public function getData($key = null, $optional = null)
     {
-        if (!$key) {
-            return $this->data;
-        }
-        if (!array_key_exists($key, $this->data)) {
-            return $optional;
-        }
-        return $this->data[$key];
+        return $this->data;
     }
 
     public function setAdapter()
@@ -84,7 +92,16 @@ class Table
     //save() for save data in database
     public function save()
     {
-        $id = $this->getData($this->getPrimaryKey());
+        // if (array_key_exists($this->getPrimaryKey(), $this->data)) {
+        //     unset($this->data[$this->getPrimaryKey()]);
+        // }
+
+        $id = $this->{$this->getPrimaryKey()};
+
+        // if (!$this->data) {
+        //     return false;
+        // }
+
         if ($id) {
             $filed = array_keys($this->data);
             $value = array_values($this->data);
@@ -100,9 +117,10 @@ class Table
             $final = rtrim($final, ",");
             $query = "UPDATE `{$this->getTableName()}` SET {$final} WHERE `{$this->getPrimaryKey()}` = '{$id}'";
             $adapter = $this->getAdapter();
-            if (!$adapter->update($query)) {
-                return false;
-            }
+            $adapter->update($query);
+            // if (!$adapter->update($query)) {
+            //     return false;
+            // }
 
         } else {
             $values = null;
@@ -118,9 +136,9 @@ class Table
             $query = "INSERT INTO `{$this->getTableName()}`({$filedName}) VALUES ({$values})";
             $adapter = $this->getAdapter();
             $id = $adapter->insert($query);
-            if (!$id) {
-                return false;
-            }
+            // if (!$id) {
+            //     return false;
+            // }
         }
         $this->load($id);
         return $this;
@@ -136,6 +154,8 @@ class Table
             return false;
         }
         $this->data = $row;
+        // $this->setOriginalData($row);
+        // $this->resetData();
         return $this;
     }
 
@@ -149,6 +169,8 @@ class Table
             return false;
         }
         $this->data = $row;
+        // $this->setOriginalData($row);
+        // $this->resetData();
         return $this;
     }
 
@@ -165,11 +187,22 @@ class Table
             return false;
         }
         foreach ($rows as $key => $value) {
+            // echo "<pre>";
+            // print_r($key);
+            // print_r($value);
+
+            // $key->setData($value);
+
             $key = new $this;
             $key->setData($value);
+            // $key->setOriginalData($value);
             $rowArray[] = $key;
         }
+        // die;
 
+        // echo "<pre>";
+        // print_r($rowArray);
+        // die;
         $collectionClassName = get_class($this) . '\collection';
         $collection = \Mage::getModel($collectionClassName);
         $collection->setData($rowArray);
@@ -229,6 +262,13 @@ class Table
             return false;
         }
         $this->data = $row;
+        // $this->setOriginalData($row);
+        return $this;
+    }
+
+    public function resetData()
+    {
+        $this->data = [];
         return $this;
     }
 

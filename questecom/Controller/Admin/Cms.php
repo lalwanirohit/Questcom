@@ -3,7 +3,6 @@
 namespace Controller\Admin;
 
 \Mage::loadFileByClassName('Controller\Core\Admin');
-\Mage::loadFileByClassName('Block\Core\Layout');
 date_default_timezone_set('Asia/Calcutta');
 
 class Cms extends \Controller\Core\Admin
@@ -11,14 +10,18 @@ class Cms extends \Controller\Core\Admin
     public function showAction()
     {
         try {
-            $layout = $this->getLayout();
+            $gridHtml = \Mage::getBlock('Block\Admin\Cms\Grid')->toHtml();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml,
+                    ],
+                ],
+            ];
 
-            $cmsGrid = \Mage::getBlock('Block\Admin\Cms\Grid');
-
-            $content = $layout->getContent();
-            $content->addChild($cmsGrid, 'grid');
-            $this->renderLayout();
-
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -28,10 +31,7 @@ class Cms extends \Controller\Core\Admin
     public function formAction()
     {
         try {
-            $layout = $this->getLayout();
-
             $id = $this->getRequest()->getGet('id');
-
             $cms = \Mage::getModel('Model\Cms');
             if ($id) {
                 $row = $cms->load($id);
@@ -40,11 +40,18 @@ class Cms extends \Controller\Core\Admin
                 }
             }
 
-            $content = $layout->getContent();
             $contentBlock = \Mage::getBlock('Block\Admin\Cms\Edit');
             $contentBlock->setTableRow($cms);
-            $content->addChild($contentBlock, 'form');
-            $this->renderLayout();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $contentBlock->toHtml(),
+                    ],
+                ],
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -82,21 +89,16 @@ class Cms extends \Controller\Core\Admin
     {
         $cms = \Mage::getModel('Model\Cms');
         if ($id = $this->getRequest()->getGet('id')) {
-            $cms->pageId = $id;
-            $status = $this->getRequest()->getGet('status');
-            if ($status == 1) {
-                $cms->status = 0;
+
+            $record = $cms->load($id);
+            if ($record->status == 1) {
+                $record->status = 0;
             } else {
-                $cms->status = 1;
+                $record->status = 1;
             }
         }
-        if ($cms->save()) {
-            $this->getMessage()->setSuccess('<b>Cms Status Changed Successfully.</b>');
-            $this->redirect('show', null, null, true);
-        } else {
-            $this->getMessage()->setFailure('<b>Unable To Change The Cms Status.</b>');
-            $this->redirect('show', null, null, true);
-        }
+        $cms->save();
+        $this->redirect('show', null, null, true);
     }
 
     public function deleteAction()
@@ -109,16 +111,25 @@ class Cms extends \Controller\Core\Admin
             $cms = \Mage::getModel('Model\Cms');
             if ($cms->delete($id)) {
                 $this->getMessage()->setSuccess('<b>Cms Deleted Successfully.</b>');
-                $this->redirect('show', null, null, true);
             } else {
                 $this->getMessage()->setFailure('<b>Unable to delete the Cms.</b>');
-                $this->redirect('show', null, null, true);
             }
-
             $this->redirect('show', null, null, true);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
         }
+    }
+
+    public function removeAction()
+    {
+        $cms = \Mage::getModel('Model\Cms');
+
+        $data = $this->getRequest()->getPost('remove');
+        $data2 = implode(', ', $data);
+        $query = "DELETE FROM cms_page where pageId in ({$data2})";
+        $cms->delete($data2, $query);
+        // $this->redirect('show', 'admin_admin');
+        $this->redirect('show', null, null, true);
     }
 }

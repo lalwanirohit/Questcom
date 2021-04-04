@@ -3,34 +3,25 @@
 namespace Controller\Admin;
 
 \Mage::loadFileByClassName('Controller\Core\Admin');
-\Mage::loadFileByClassName('Block\Core\Layout');
 date_default_timezone_set('Asia/Calcutta');
 
 class Category extends \Controller\Core\Admin
 {
-
-    public function getCategories()
-    {
-        return $this->categories;
-    }
-
-    public function setCategories($result)
-    {
-        $this->categories = $result;
-        return $this;
-    }
-
     public function showAction()
     {
         try {
-            $layout = $this->getLayout();
+            $gridHtml = \Mage::getBlock('Block\Admin\Category\Grid')->toHtml();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml,
+                    ],
+                ],
+            ];
 
-            $contentGrid = \Mage::getBlock('Block\Admin\Category\Grid');
-
-            $content = $layout->getContent();
-            $content->addChild($contentGrid, 'grid');
-            $this->renderLayout();
-
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -40,10 +31,7 @@ class Category extends \Controller\Core\Admin
     public function formAction()
     {
         try {
-            $layout = $this->getLayout();
-
             $id = $this->getRequest()->getGet('id');
-
             $category = \Mage::getModel('Model\Category');
             if ($id) {
                 $row = $category->load($id);
@@ -51,13 +39,18 @@ class Category extends \Controller\Core\Admin
                     throw new \Exception("No category is available at given id", 1);
                 }
             }
-
-            $content = $layout->getContent();
             $contentBlock = \Mage::getBlock('Block\Admin\Category\Edit');
             $contentBlock->setTableRow($category);
-            $content->addChild($contentBlock, 'form');
-            $this->renderLayout();
-
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $contentBlock->toHtml(),
+                    ],
+                ],
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -98,23 +91,16 @@ class Category extends \Controller\Core\Admin
     {
         $category = \Mage::getModel('Model\Category');
         if ($id = $this->getRequest()->getGet('id')) {
-            $category->updatedAt = date('Y-m-d | h:i:s A');
-            $category->categoryId = $id;
-            $status = $this->getRequest()->getGet('status');
 
-            if ($status == 1) {
-                $category->status = 0;
+            $record = $category->load($id);
+            if ($record->status == 1) {
+                $record->status = 0;
             } else {
-                $category->status = 1;
+                $record->status = 1;
             }
         }
-        if ($category->save()) {
-            $this->getMessage()->setSuccess('<b>Category Status Changed Successfully.</b>');
-            $this->redirect('show', null, null, true);
-        } else {
-            $this->getMessage()->setFailure('<b>Unable To Change The Category Status.</b>');
-            $this->redirect('show', null, null, true);
-        }
+        $category->save();
+        $this->redirect('show', null, null, true);
     }
 
     public function deleteAction()
@@ -139,5 +125,23 @@ class Category extends \Controller\Core\Admin
             $this->redirect('show', null, [], true);
         }
 
+    }
+
+    public function removeAction()
+    {
+        $category = \Mage::getModel('Model\Category');
+
+        $data = $this->getRequest()->getPost('remove');
+        foreach ($data as $key => $value) {
+            $category = $category->load($value);
+            $path = $category->path;
+            $parentId = $category->parentId;
+            $category->updateChildPath($path, $parentId);
+            $category->delete($value);
+        }
+        $data2 = implode(', ', $data);
+        $query = "DELETE FROM category where categoryId in ({$data2})";
+        $category->delete($data2, $query);
+        $this->redirect('show', null, null, true);
     }
 }

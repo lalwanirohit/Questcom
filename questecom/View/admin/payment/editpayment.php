@@ -9,7 +9,7 @@
     <?php $payment = $this->getTableRow();?>
 
     <hr><br>
-    <form method="post" action="<?php echo $this->getFormUrl(); ?>">
+    <form method="post" id="paymentForm" action="<?php echo $this->getFormUrl(); ?>">
 
         <div class="form-row">
 
@@ -46,11 +46,6 @@
         </div>
 
         <br>
-        <?php if ($id): ?>
-            <button class="btn btn-warning">Update Payment</button>
-        <?php else: ?>
-            <button class="btn btn-warning">Insert Payment</button>
-        <?php endif;?>
-
+        <button class="btn btn-warning" type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#paymentForm').load();">Save Payment</button>
     </form>
 </div>

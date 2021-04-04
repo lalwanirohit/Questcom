@@ -3,7 +3,6 @@
 namespace Controller\Admin;
 
 \Mage::loadFileByClassName('Controller\Core\Admin');
-\Mage::loadFileByClassName('Block\Core\Layout');
 date_default_timezone_set('Asia/Calcutta');
 
 class Customer extends \Controller\Core\Admin
@@ -12,14 +11,18 @@ class Customer extends \Controller\Core\Admin
     public function showAction()
     {
         try {
-            $layout = $this->getLayout();
+            $gridHtml = \Mage::getBlock('Block\Admin\Customer\Grid')->toHtml();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml,
+                    ],
+                ],
+            ];
 
-            $contentGrid = \Mage::getBlock('Block\Admin\Customer\Grid');
-
-            $content = $layout->getChild('content');
-            $content->addChild($contentGrid, 'grid');
-            $this->renderLayout();
-
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -30,9 +33,7 @@ class Customer extends \Controller\Core\Admin
     {
         try {
             $layout = $this->getLayout();
-
             $id = $this->getRequest()->getGet('id');
-
             $customer = \Mage::getModel('Model\Customer');
             if ($id) {
                 $row = $customer->load($id);
@@ -41,12 +42,18 @@ class Customer extends \Controller\Core\Admin
                 }
             }
 
-            $content = $layout->getContent();
             $contentBlock = \Mage::getBlock('Block\Admin\Customer\Edit');
             $contentBlock->setTableRow($customer);
-            $content->addChild($contentBlock, 'form');
-            $this->renderLayout();
-
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $contentBlock->toHtml(),
+                    ],
+                ],
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -74,11 +81,10 @@ class Customer extends \Controller\Core\Admin
             $customer->setData($data);
             if ($customer->save()) {
                 $this->getMessage()->setSuccess('<b>Customer Inserted / Updated Successfully.</b>');
-                $this->redirect('show', null, null, true);
             } else {
                 $this->getMessage()->setFailure('<b>Unable to Insert / Update the Customer.</b>');
-                $this->redirect('show', null, null, true);
             }
+            $this->redirect('show', null, null, true);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -89,22 +95,16 @@ class Customer extends \Controller\Core\Admin
     {
         $customer = \Mage::getModel('Model\Customer');
         if ($id = $this->getRequest()->getGet('id')) {
-            $customer->updatedAt = date('Y-m-d | h:i:s A');
-            $customer->customerId = $id;
-            $status = $this->getRequest()->getGet('status');
-            if ($status == 1) {
-                $customer->status = 0;
+
+            $record = $customer->load($id);
+            if ($record->status == 1) {
+                $record->status = 0;
             } else {
-                $customer->status = 1;
+                $record->status = 1;
             }
         }
-        if ($customer->save()) {
-            $this->getMessage()->setSuccess('<b>Customer Status Changed Successfully.</b>');
-            $this->redirect('show', null, null, true);
-        } else {
-            $this->getMessage()->setFailure('<b>Unable To Change The Customer Status.</b>');
-            $this->redirect('show', null, null, true);
-        }
+        $customer->save();
+        $this->redirect('show', null, null, true);
     }
 
     public function deleteAction()
@@ -121,10 +121,8 @@ class Customer extends \Controller\Core\Admin
 
             if ($address->delete($id, $query) && $customer->delete($id)) {
                 $this->getMessage()->setSuccess('<b>Customer Deleted Successfully.</b>');
-                $this->redirect('show', null, null, true);
             } else {
                 $this->getMessage()->setFailure('<b>Unable to delete the Customer.</b>');
-                $this->redirect('show', null, null, true);
             }
 
             $this->redirect('show', null, null, true);
@@ -132,5 +130,17 @@ class Customer extends \Controller\Core\Admin
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
         }
+    }
+
+    public function removeAction()
+    {
+        $customer = \Mage::getModel('Model\Customer');
+
+        $data = $this->getRequest()->getPost('remove');
+        $data2 = implode(', ', $data);
+        $query = "DELETE FROM customer where customerId in ({$data2})";
+        $customer->delete($data2, $query);
+        // $this->redirect('show', 'admin_admin');
+        $this->redirect('show', null, null, true);
     }
 }

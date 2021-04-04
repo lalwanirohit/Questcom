@@ -11,9 +11,8 @@
 				<td width="800px">
 				<?php else: ?>
 				<td width="1000px" style="padding-left: 100px;">
-
 				<?php endif;?>
-	    			<form method="POST" action="<?php echo $this->getFormUrl(); ?>" enctype="multipart/form-data">
+	    			<form method="POST" id="form" enctype="multipart/form-data">
 	        			<?php echo $this->getTabContent(); ?>
 	    			</form>
 				</td>

@@ -10,7 +10,7 @@
 
     <hr><br>
 
-    <form method="post" action="<?php echo $this->getFormUrl(); ?>">
+    <form method="post" id="cmsForm" action="<?php echo $this->getFormUrl(); ?>">
 
         <div class="form-row">
 
@@ -50,11 +50,7 @@
         </div>
 
         <br>
-        <?php if ($id = $this->getRequest()->getGet('id')): ?>
-            <button onclick="getContent()" class="btn btn-warning">Update Cms</button>
-        <?php else: ?>
-            <button onclick="getContent()" class="btn btn-warning">Insert Cms</button>
-        <?php endif;?>
+        <button type="button" href="javascript:void(0)" onclick="getContent(); object.resetParams().setForm('#cmsForm').load()" class="btn btn-warning">Save Cms</button>
 
         <input type="hidden" id="myContent" name="cms[content]">
         <input type="hidden" id="setContent" value="<?php echo htmlentities($cms->content); ?>">

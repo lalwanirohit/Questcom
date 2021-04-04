@@ -1,16 +1,7 @@
 <?php $attributes = $this->getAttribute();?>
 <?php $options = $this->getOptions();?>
 <?php $product = $this->getTableRow();?>
-<?php //$type = explode(',', $product->type);
-//print_r($type);?>
-<?php //echo "<pre>";
-// print_r($product);die; ?>
-<?php
-/*foreach ($options->getData() as $key => $value) {
-$one = $value->getData();
-echo $one['name'];
-}*/
-?>
+
 <h1>Product Attributes</h1>
 <hr><br>
 
@@ -82,14 +73,13 @@ echo $one['name'];
         </div>
     <?php endforeach;?>
 
-    <button onclick="updateData(this)" class="btn btn-warning" name="update">Update</button>
+    <button type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" class="btn btn-warning" name="update">Update</button>
 <?php endif;?>
 
 
 <script>
-    function updateData(button) {
+    function submitForm(button) {
         var form = $(button).closest('form');
         form.attr('action','<?php echo $this->getUrl()->getUrl('save', 'admin_product_attribute'); ?>');
-        form.submit();
     }
 </script>

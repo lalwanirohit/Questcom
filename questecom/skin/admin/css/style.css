@@ -1,28 +1,37 @@
 body {
-    background-color: #29282C;
-}
-span {
-    color: #F7BB0E;
+  background-color: #29282c;
+  /* background-color: #dcc7aa; */
+  /* background-color: white; */
+  /* font-family: Poppins; */
+  /* background-color: powderblue; */
+  /* background-image: url("../images/general/wallpaper1.jpg"); */
+  /* background-color: rgba(0, 0, 0, 0.4); */
 }
 
-h1{
-    color: #F7BB0E;
+/* .container-fluid {
+  background-color: rgba(0, 0, 0, 0.4);
+} */
+
+span {
+  color: #f7bb0e;
 }
-hr{
-    background-color:#F7BB0E ;
+
+h1 {
+  color: #f7bb0e;
+}
+hr {
+  background-color: #f7bb0e;
 }
 label {
-    color:white;
+  color: white;
 }
 table {
-    background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 td {
-    color: white;
+  color: white;
 }
 th {
-    color: #F7BB0E;
-    font-size: medium;
+  color: #f7bb0e;
+  font-size: medium;
 }
-
-

@@ -3,7 +3,6 @@
 namespace Controller\Admin;
 
 \Mage::loadFileByClassName('Controller\Core\Admin');
-\Mage::loadFileByClassName('Block\Core\Layout');
 date_default_timezone_set('Asia/Calcutta');
 
 class Shipping extends \Controller\Core\Admin
@@ -11,14 +10,18 @@ class Shipping extends \Controller\Core\Admin
     public function showAction()
     {
         try {
-            $layout = $this->getLayout();
+            $gridHtml = \Mage::getBlock('Block\Admin\Shipping\Grid')->toHtml();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $gridHtml,
+                    ],
+                ],
+            ];
 
-            $contentGrid = \Mage::getBlock('Block\Admin\Shipping\Grid');
-
-            $content = $layout->getContent();
-            $content->addChild($contentGrid, 'grid');
-            $this->renderLayout();
-
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -28,10 +31,7 @@ class Shipping extends \Controller\Core\Admin
     public function formAction()
     {
         try {
-            $layout = $this->getLayout();
-
             $id = $this->getRequest()->getGet('id');
-
             $shipping = \Mage::getModel('Model\Shipping');
             if ($id) {
                 $row = $shipping->load($id);
@@ -39,12 +39,18 @@ class Shipping extends \Controller\Core\Admin
                     throw new \Exception("No shipping is available at given id", 1);
                 }
             }
-
-            $content = $layout->getContent();
             $contentBlock = \Mage::getBlock('Block\Admin\Shipping\Edit');
             $contentBlock->setTableRow($shipping);
-            $content->addChild($contentBlock, 'form');
-            $this->renderLayout();
+            $response = [
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $contentBlock->toHtml(),
+                    ],
+                ],
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
@@ -82,21 +88,16 @@ class Shipping extends \Controller\Core\Admin
     {
         $shipping = \Mage::getModel('Model\Shipping');
         if ($id = $this->getRequest()->getGet('id')) {
-            $shipping->methodId = $id;
-            $status = $this->getRequest()->getGet('status');
-            if ($status == 1) {
-                $shipping->status = 0;
+
+            $record = $shipping->load($id);
+            if ($record->status == 1) {
+                $record->status = 0;
             } else {
-                $shipping->status = 1;
+                $record->status = 1;
             }
         }
-        if ($shipping->save()) {
-            $this->getMessage()->setSuccess('<b>Shipment Status Changed Successfully.</b>');
-            $this->redirect('show', null, null, true);
-        } else {
-            $this->getMessage()->setFailure('<b>Unable To Change The Shipment Status.</b>');
-            $this->redirect('show', null, null, true);
-        }
+        $shipping->save();
+        $this->redirect('show', null, null, true);
     }
 
     public function deleteAction()
@@ -109,16 +110,25 @@ class Shipping extends \Controller\Core\Admin
             $shipping = \Mage::getModel('Model\Shipping');
             if ($shipping->delete($id)) {
                 $this->getMessage()->setSuccess('<b>Shipment Deleted Successfully.</b>');
-                $this->redirect('show', null, null, true);
             } else {
                 $this->getMessage()->setFailure('<b>Unable to delete the Shipment.</b>');
-                $this->redirect('show', null, null, true);
             }
-
             $this->redirect('show', null, null, true);
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', null, null, true);
         }
+    }
+
+    public function removeAction()
+    {
+        $shipping = \Mage::getModel('Model\Shipping');
+
+        $data = $this->getRequest()->getPost('remove');
+        $data2 = implode(', ', $data);
+        $query = "DELETE FROM shipping where methodId in ({$data2})";
+        $shipping->delete($data2, $query);
+        // $this->redirect('show', 'admin_admin');
+        $this->redirect('show', null, null, true);
     }
 }

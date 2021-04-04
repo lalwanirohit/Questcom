@@ -61,18 +61,19 @@ Base.prototype = {
         return this;
     },
 
+    setForm: function (form) {
+        this.setMethod($(form).attr('method'));
+        this.setUrl($(form).attr('action'));
+        this.setParams($(form).serializeArray());
+        return this;
+    },
+
     load : function() {
 
         var request = $.ajax({
             method : this.getMethod(),
             url : this.getUrl(),
             data : this.getParams(),
-
-            // success : function(response){
-			// 	$.each(response.element, function (i, element) {
-			// 		$(element.selector).html(element.html);
-			// 	});
-			// }
             success : function(response) {
                 console.log(response);
                 if(typeof response.element == 'object') {
@@ -85,19 +86,10 @@ Base.prototype = {
                 }
             }
         });
-
-        // request.done(function(response) {
-        //     $(response.element.selector).html(response.element.html);
-        //     console.log(response.element.selector);
-        // });
     }
 
 }
 
+
 var object = new Base();
-object.setParams({
-    name : 'rohit',
-    email : 'lalwanirohit111@gmail.com'
-});
-object.setUrl('http://localhost/projects/cybercom/index.php?controller=product&action=showHtml');
-object.load();
+

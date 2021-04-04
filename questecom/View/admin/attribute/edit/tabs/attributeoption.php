@@ -1,9 +1,6 @@
     <div class="float-right mb-2 mr-2">
-    <?php
-/*
-<button type="button" onclick="object.resetParams().setForm('#optionsForm').load()" class="btn btn-success text-left mt-3 mb-2">Update</button>
- */?>
-<button onclick="updateData(this)" class="btn btn-warning" id="update" name="update">Update</button>
+    <button type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" class="btn btn-success text-left mt-3 mb-2">Update</button>
+    <!-- <button onclick="updateData(this)" class="btn btn-warning" id="update" name="update">Update</button> -->
 
     </div><br>
     <!-- <div class="h2 text-center mb-2" > -->
@@ -72,10 +69,15 @@
         objectTr.remove();
     }
 
-    function updateData(button) {
-    var form = $(button).closest('form');
-    form.attr('action','<?php echo $this->getUrl()->getUrl('save', 'admin_attribute_option'); ?>');
-    form.submit();
+    // function updateData(button) {
+    // var form = $(button).closest('form');
+    // form.attr('action','<?php echo $this->getUrl()->getUrl('save', 'admin_attribute_option'); ?>');
+    // // form.submit();
+    // }
+
+    function submitForm(button){
+        var form = $(button).closest('form');
+        form.attr('action', "<?php echo $this->getUrl()->getUrl('save', 'admin_attribute_option'); ?>");
     }
 
     function addRow(){

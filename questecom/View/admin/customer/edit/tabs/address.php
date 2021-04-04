@@ -71,12 +71,11 @@
     </div>
     <br>
 
-    <button type="button" onclick="submitForm(this)" class="btn btn-warning" name="billing">Add Billing Address</button>
+    <button type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" class="btn btn-warning" name="billing">Add Billing Address</button>
 
     <script>
         function submitForm(button) {
             var form = $(button).closest('form');
             form.attr('action','<?php echo $this->getUrl()->getUrl('save', 'admin_customer_address'); ?>');
-            form.submit();
         }
     </script>

@@ -26,7 +26,7 @@ class Price extends \Controller\Core\Admin
 
                 $ProductGroupPrice->save();
             }
-            $this->redirect('show', 'admin_product');
+            $this->redirect('form', 'admin_product');
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
             $this->redirect('show', 'admin_product');

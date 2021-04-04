@@ -9,7 +9,7 @@
     <?php $group = $this->getTableRow();?>
 
     <hr><br>
-    <form method="post" action="<?php echo $this->getFormUrl(); ?>">
+    <form method="post" id="groupForm" action="<?php echo $this->getFormUrl(); ?>">
 
         <div class="form-row">
 
@@ -32,11 +32,6 @@
         </div>
 
         <br>
-        <?php if ($id = $this->getRequest()->getGet('id')): ?>
-            <button class="btn btn-warning">Update Customer Group</button>
-        <?php else: ?>
-            <button class="btn btn-warning">Insert Customer Group</button>
-        <?php endif;?>
-
+        <button type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#groupForm').load();" class="btn btn-warning">Save Customer Group</button>
     </form>
 </div>

@@ -64,14 +64,13 @@
         </div>
     <?php endforeach;?>
 
-    <button onclick="updateData(this)" class="btn btn-warning" name="update">Update</button>
+    <button type="button" href="javascript:void(0)" onclick="saveForm(this); object.resetParams().setForm('#form').load();" class="btn btn-warning" name="update">Update</button>
 <?php endif;?>
 
 
 <script>
-    function updateData(button) {
+    function saveForm(button) {
         var form = $(button).closest('form');
         form.attr('action','<?php echo $this->getUrl()->getUrl('save', 'admin_category_attribute'); ?>');
-        form.submit();
     }
 </script>

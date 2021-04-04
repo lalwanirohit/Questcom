@@ -126,7 +126,7 @@ class Adapter
         if (!$this->isConnected()) {
             $this->connection();
         }
-        $this->connect->query($query);
+        return $this->connect->query($query);
     }
 
 }
