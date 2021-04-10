@@ -61,7 +61,7 @@
         </div>
     </div>
     <br>
-    <button type="button" href="javascript:void(0)" class="btn btn-warning" onclick="submitForm(this); object.resetParams().setForm('#form').load();">Save Attribute</button>
+    <button style="color:white;" type="button" href="javascript:void(0)" class="btn btn-warning" onclick="submitForm(this); object.resetParams().setForm('#form').load();">Save Attribute</button>
 <!-- </form> -->
 
 <script>

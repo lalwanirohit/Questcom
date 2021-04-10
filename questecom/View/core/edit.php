@@ -4,7 +4,7 @@
 			<tr>
 				<?php if ($this->getRequest()->getGet('id')): ?>
 
-				<td width="200px">
+				<td width="200px" valign="center">
 					<?php echo $this->getTabHtml(); ?>
 				</td>
 

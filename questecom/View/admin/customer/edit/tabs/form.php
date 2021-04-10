@@ -56,7 +56,7 @@
 
 </div>
 <br>
-    <button class="btn btn-warning" type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" name="addorupdatecustomer">Save Customer</button>
+    <button style="color:white;" class="btn btn-warning" type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" name="addorupdatecustomer">Save Customer</button>
 
 <script>
 function submitForm(button) {

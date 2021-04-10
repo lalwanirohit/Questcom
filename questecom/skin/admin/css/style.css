@@ -1,5 +1,6 @@
 body {
-  background-color: #29282c;
+  /* background-color: #29282c; */
+  background-color: white;
   /* background-color: #dcc7aa; */
   /* background-color: white; */
   /* font-family: Poppins; */
@@ -13,25 +14,29 @@ body {
 } */
 
 span {
-  color: #f7bb0e;
+  color: black;
+  font-weight: bolder;
 }
 
 h1 {
-  color: #f7bb0e;
+  /* color: #f7bb0e; */
+  color: rgb(0, 47, 53);
 }
 hr {
-  background-color: #f7bb0e;
+  color: rgb(0, 47, 53);
+  /* background-color: #f7bb0e; */
 }
 label {
-  color: white;
+  color: black;
 }
 table {
   background-color: rgba(0, 0, 0, 0);
 }
 td {
-  color: white;
+  color: black;
 }
 th {
-  color: #f7bb0e;
+  color: rgb(0, 47, 53);
+  /* color: #f7bb0e; */
   font-size: medium;
 }

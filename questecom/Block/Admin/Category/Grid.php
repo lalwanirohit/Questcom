@@ -21,7 +21,7 @@ class Grid extends \Block\Core\Template
         }
         if (!$categories) {
             $category = \Mage::getModel('Model\Category');
-            $query = "SELECT * FROM `{$category->getTableName}` ORDER BY `path` ASC";
+            $query = "SELECT * FROM `{$category->getTableName()}` ORDER BY `path` ASC";
             $collection = $category->all($query);
             $this->categories = $collection;
         }

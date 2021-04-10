@@ -46,6 +46,6 @@
         </div>
 
         <br>
-        <button class="btn btn-warning" type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#paymentForm').load();">Save Payment</button>
+        <button style="color:white;" class="btn btn-warning" type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#paymentForm').load();">Save Payment</button>
     </form>
 </div>

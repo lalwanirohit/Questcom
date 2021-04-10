@@ -50,7 +50,7 @@
         </div>
 
         <br>
-        <button type="button" href="javascript:void(0)" onclick="getContent(); object.resetParams().setForm('#cmsForm').load()" class="btn btn-warning">Save Cms</button>
+        <button style="color:white;" type="button" href="javascript:void(0)" onclick="getContent(); object.resetParams().setForm('#cmsForm').load()" class="btn btn-warning">Save Cms</button>
 
         <input type="hidden" id="myContent" name="cms[content]">
         <input type="hidden" id="setContent" value="<?php echo htmlentities($cms->content); ?>">

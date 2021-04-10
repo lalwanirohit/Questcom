@@ -71,7 +71,7 @@
     </div>
     <br>
 
-    <button type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" class="btn btn-warning" name="billing">Add Billing Address</button>
+    <button style="color:white;" type="button" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();" class="btn btn-warning" name="billing">Add Billing Address</button>
 
     <script>
         function submitForm(button) {

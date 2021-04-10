@@ -15,7 +15,7 @@
 
 	<?php if ($buttons): ?>
 		<?php foreach ($buttons as $key => $button): ?>
-			<a type="button" href="javascript:void(0)" class="<?php echo $button['class'] ?>" onclick="<?php echo $this->getButtonUrl($button['method'], $button['ajax']) ?>"><?php echo $button['label'] ?></a>
+			<a type="button" style="<?php echo $button['style'] ?>" href="javascript:void(0)" class="<?php echo $button['class'] ?>" onclick="<?php echo $this->getButtonUrl($button['method']) ?>"><?php echo $button['label'] ?></a>
 		<?php endforeach;?>
 	<?php endif;?>
 	<br><br>
@@ -63,16 +63,16 @@
 
 			<?php if ($status): ?>
 				<?php if ($row->status == '1'): ?>
-					<td><a class="<?php echo $status[0]['class']; ?>" onClick="<?php echo $this->getMethodUrl($row, $status[0]['method'], $status[0]['ajax']) ?>"><?php echo $status[0]['label'] ?></a></td>
+					<td><a style="<?php echo $status[0]['style']; ?>" class="<?php echo $status[0]['class']; ?>" onClick="<?php echo $this->getMethodUrl($row, $status[0]['method']) ?>"><?php echo $status[0]['label'] ?></a></td>
 				<?php else: ?>
-					<td><a class="<?php echo $status[1]['class']; ?>" onClick="<?php echo $this->getMethodUrl($row, $status[1]['method'], $status[1]['ajax']) ?>"><?php echo $status[1]['label'] ?></a></td>
+					<td><a style="<?php echo $status[1]['style']; ?>" class="<?php echo $status[1]['class']; ?>" onClick="<?php echo $this->getMethodUrl($row, $status[1]['method']) ?>"><?php echo $status[1]['label'] ?></a></td>
 				<?php endif;?>
 			<?php endif;?>
 
 
 			<?php if ($actions): ?>
 				<?php foreach ($actions as $key => $action): ?>
-					<td><a class="<?php echo $action['class']; ?>" href="javascript:void(0)" onClick="<?php echo $this->getMethodUrl($row, $action['method'], $action['ajax']) ?>"><?php echo $action['label'] ?></a></td>
+					<td><a style="<?php echo $action['style']; ?>" class="<?php echo $action['class']; ?>" href="javascript:void(0)" onClick="<?php echo $this->getMethodUrl($row, $action['method']) ?>"><?php echo $action['label'] ?></a></td>
 				<?php endforeach;?>
 			<?php endif;?>
 

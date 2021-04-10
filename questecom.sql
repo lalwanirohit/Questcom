@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2021 at 10:16 AM
+-- Generation Time: Apr 10, 2021 at 06:04 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -78,6 +78,13 @@ CREATE TABLE `attribute_option` (
   `attributeId` int(11) NOT NULL,
   `sortOrder` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `attribute_option`
+--
+
+INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) VALUES
+(79, 'red', 32, 1);
 
 -- --------------------------------------------------------
 
@@ -187,8 +194,7 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`categoryId`, `parentId`, `name`, `path`, `status`, `description`, `createdAt`, `updatedAt`) VALUES
-(25, 0, 'bed', '25', 1, 's', '', ''),
-(27, 0, 'sofa', '27', 1, 'afsaf', '', '');
+(28, 0, 'Bedroom', '28', 1, 'Bedroom', '', '');
 
 -- --------------------------------------------------------
 
@@ -381,7 +387,7 @@ CREATE TABLE `product_brand` (
 --
 
 INSERT INTO `product_brand` (`brandId`, `brandName`, `brandImage`, `status`, `createdAt`) VALUES
-(1, 'one', '7-1616480819-qign.jpg', 0, '2021-03-23 | 11:56:59 AM');
+(1, 'one', '7-1616480819-qign.jpg', 1, '2021-03-23 | 11:56:59 AM');
 
 -- --------------------------------------------------------
 
@@ -576,7 +582,7 @@ ALTER TABLE `attribute`
 -- AUTO_INCREMENT for table `attribute_option`
 --
 ALTER TABLE `attribute_option`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -600,7 +606,7 @@ ALTER TABLE `cart_item`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `category_media`

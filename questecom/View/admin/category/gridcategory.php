@@ -1,10 +1,10 @@
-<div class="container">
+<div class="container-fluid" style="padding-left:100px; padding-right:100px">
 <form id="categoryForm" method="post">
 	<?php $categories = $this->getCategories();?>
 
 	<h1>Categories</h1>
-
 	<hr>
+	<br>
 	<a class="btn btn-info" href="javascript:void(0)" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('form', 'admin_category'); ?>').resetParams().load()">Add New Category</a>
 	<a class="btn btn-danger" href="javascript:void(0)" onclick="removeData(this); object.resetParams().setForm('#categoryForm').load();">Remove Selected</a>
 	<br><br>

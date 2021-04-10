@@ -58,14 +58,14 @@ class Grid extends \Block\Core\Grid
         $this->addFilterButton('0', [
             'label' => 'Apply Filter',
             'method' => 'applyFilter',
-            'style' => 'text-align: right',
-            'class' => 'btn btn-primary',
+            'style' => 'text-align: right;',
+            'class' => 'btn btn-info',
         ]);
 
         $this->addFilterButton('1', [
             'label' => 'Reset Filter',
             'method' => 'resetFilter',
-            'style' => 'text-align: left',
+            'style' => 'text-align: left;',
             'class' => 'btn btn-danger',
         ]);
     }
@@ -175,12 +175,14 @@ class Grid extends \Block\Core\Grid
         $this->addAction('edit', [
             'label' => 'Edit',
             'method' => 'getFormUrl',
+            'style' => 'color: white',
             'class' => 'btn btn-info',
         ]);
 
         $this->addAction('delete', [
             'label' => 'Delete',
             'method' => 'getDeleteUrl',
+            'style' => 'color: white;',
             'class' => 'btn btn-danger',
         ]);
 

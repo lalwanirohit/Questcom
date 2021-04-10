@@ -10,8 +10,8 @@ class Tabs extends \Block\Core\Edit\Tabs
     {
         $this->setDefaultTab('attribute');
 
-        $this->addTab('attribute', ['key' => 'attribute', 'label' => 'Attribute Form', 'block' => 'Block\Admin\Attribute\Edit\Tabs\Form']);
-        $this->addTab('attributeOption', ['key' => 'attributeOption', 'label' => 'Attribute Option', 'block' => 'Block\Admin\Attribute\Edit\Tabs\AttributeOption']);
+        $this->addTab('attribute', ['key' => 'attribute', 'class' => 'btn btn-info', 'label' => 'Attribute Form', 'block' => 'Block\Admin\Attribute\Edit\Tabs\Form']);
+        $this->addTab('attributeOption', ['key' => 'attributeOption', 'class' => 'btn btn-info', 'label' => 'Attribute Option', 'block' => 'Block\Admin\Attribute\Edit\Tabs\AttributeOption']);
 
         return $this;
     }

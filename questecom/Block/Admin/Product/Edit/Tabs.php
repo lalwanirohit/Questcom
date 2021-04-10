@@ -10,10 +10,10 @@ class Tabs extends \Block\Core\Edit\Tabs
     {
         $this->setDefaultTab('product');
 
-        $this->addTab('product', ['key' => 'product', 'label' => 'Product Form', 'block' => 'Block\Admin\Product\Edit\Tabs\Form']);
-        $this->addTab('media', ['key' => 'media', 'label' => 'Product Media', 'block' => 'Block\Admin\Product\Edit\Tabs\Media']);
-        $this->addTab('categorytree', ['key' => 'categorytree', 'label' => 'Product Attributes', 'block' => 'Block\Admin\Product\Edit\Tabs\Attribute']);
-        $this->addTab('groupPrice', ['key' => 'groupPrice', 'label' => 'Product Group Price', 'block' => 'Block\Admin\Product\Edit\Tabs\GroupPrice']);
+        $this->addTab('product', ['class' => 'btn btn-info', 'key' => 'product', 'label' => 'Product Form', 'block' => 'Block\Admin\Product\Edit\Tabs\Form']);
+        $this->addTab('media', ['class' => 'btn btn-info', 'key' => 'media', 'label' => 'Product Media', 'block' => 'Block\Admin\Product\Edit\Tabs\Media']);
+        $this->addTab('categorytree', ['class' => 'btn btn-info', 'key' => 'categorytree', 'label' => 'Product Attributes', 'block' => 'Block\Admin\Product\Edit\Tabs\Attribute']);
+        $this->addTab('groupPrice', ['class' => 'btn btn-info', 'key' => 'groupPrice', 'label' => 'Product Group Price', 'block' => 'Block\Admin\Product\Edit\Tabs\GroupPrice']);
 
         return $this;
     }

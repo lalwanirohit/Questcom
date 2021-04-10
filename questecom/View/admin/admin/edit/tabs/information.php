@@ -36,7 +36,7 @@
 
             <br>
 
-            <button type="button" class="btn btn-warning" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();">Save Admin</button>
+            <button type="button" style="color:white;" class="btn btn-warning" href="javascript:void(0)" onclick="submitForm(this); object.resetParams().setForm('#form').load();">Save Admin</button>
 
 </div>
 

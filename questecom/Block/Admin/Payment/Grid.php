@@ -60,7 +60,7 @@ class Grid extends \Block\Core\Grid
             'label' => 'Apply Filter',
             'method' => 'applyFilter',
             'style' => 'text-align: right',
-            'class' => 'btn btn-primary',
+            'class' => 'btn btn-info',
         ]);
 
         $this->addFilterButton('1', [

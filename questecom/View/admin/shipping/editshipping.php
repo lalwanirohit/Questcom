@@ -54,6 +54,6 @@
         </div>
 
         <br>
-        <button class="btn btn-warning" type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#shippingForm').load();">Save Shipping</button>
+        <button style="color:white;" class="btn btn-warning" type="button" href="javascript:void(0)" onclick="object.resetParams().setForm('#shippingForm').load();">Save Shipping</button>
     </form>
 </div>

@@ -37,7 +37,7 @@
         </div>
 
         <br>
-        <button class="btn btn-warning" href="javascript:void(0)" type="button" id="brandUpload">Insert Brand</button>
+        <button style="color:white;" class="btn btn-warning" href="javascript:void(0)" type="button" id="brandUpload">Save Brand</button>
 
 <script>
 $(document).ready(function(){

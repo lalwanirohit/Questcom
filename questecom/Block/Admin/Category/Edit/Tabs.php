@@ -10,9 +10,9 @@ class Tabs extends \Block\Core\Edit\Tabs
     {
         $this->setDefaultTab('categoryForm');
 
-        $this->addTab('categoryForm', ['label' => 'Category Form', 'block' => 'Block\Admin\Category\Edit\Tabs\Form']);
-        $this->addTab('categoryTree', ['label' => 'Category Attribute', 'block' => 'Block\Admin\Category\Edit\Tabs\Attribute']);
-        $this->addTab('categoryMedia', ['label' => 'Category Media', 'block' => 'Block\Admin\Category\Edit\Tabs\Media']);
+        $this->addTab('categoryForm', ['class' => 'btn btn-info', 'label' => 'Category Form', 'block' => 'Block\Admin\Category\Edit\Tabs\Form']);
+        $this->addTab('categoryTree', ['class' => 'btn btn-info', 'label' => 'Category Attribute', 'block' => 'Block\Admin\Category\Edit\Tabs\Attribute']);
+        $this->addTab('categoryMedia', ['class' => 'btn btn-info', 'label' => 'Category Media', 'block' => 'Block\Admin\Category\Edit\Tabs\Media']);
 
         return $this;
     }

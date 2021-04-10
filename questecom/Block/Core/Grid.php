@@ -155,14 +155,14 @@ class Grid extends Template
         $this->addStatus('0', [
             'label' => 'Disable',
             'method' => 'getStatusUrl',
-            'ajax' => true,
+            'style' => 'color: white;',
             'class' => 'btn btn-danger',
         ]);
 
         $this->addStatus('1', [
             'label' => 'Enable',
             'method' => 'getStatusUrl',
-            'ajax' => true,
+            'style' => 'color: white;',
             'class' => 'btn btn-info',
         ]);
 

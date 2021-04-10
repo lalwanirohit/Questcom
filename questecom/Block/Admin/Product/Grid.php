@@ -82,7 +82,7 @@ class Grid extends \Block\Core\Grid
             'label' => 'Apply Filter',
             'method' => 'applyFilter',
             'style' => 'text-align: right',
-            'class' => 'btn btn-primary',
+            'class' => 'btn btn-info',
         ]);
 
         $this->addFilterButton('1', [
@@ -238,7 +238,7 @@ class Grid extends \Block\Core\Grid
         $this->addAction('addToCart', [
             'label' => 'Add To Cart',
             'method' => 'getAddToCartUrl',
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-info',
         ]);
     }
 

@@ -10,8 +10,8 @@ class Tabs extends \Block\Core\Edit\Tabs
     {
         $this->setDefaultTab('customer');
 
-        $this->addTab('customer', ['label' => 'Customer Information', 'block' => 'Block\Admin\Customer\Edit\Tabs\Form']);
-        $this->addTab('address', ['label' => 'Addresses', 'block' => 'Block\Admin\Customer\Edit\Tabs\Address']);
+        $this->addTab('customer', ['class' => 'btn btn-info', 'label' => 'Customer Information', 'block' => 'Block\Admin\Customer\Edit\Tabs\Form']);
+        $this->addTab('address', ['class' => 'btn btn-info', 'label' => 'Addresses', 'block' => 'Block\Admin\Customer\Edit\Tabs\Address']);
 
         return $this;
     }
